@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://crudpessoa:5432/crudpessoa
+      SPRING_DATASOURCE_USERNAME: crudpessoa
+      SPRING_DATASOURCE_PASSWORD: crudpessoa
+    depends_on:
+      - crudpessoa
+    networks:
+      - crudpessoa-network
+
+  crudpessoa:
+    image: postgres:15
+    container_name: crudpessoa-postgres
+    environment:
+      POSTGRES_DB: crudpessoa
+      POSTGRES_USER: crudpessoa
+      POSTGRES_PASSWORD: crudpessoa
+    ports:
+      - "5436:5432"
+    networks:
+      - crudpessoa-network
+
+networks:
+  crudpessoa-network:
+    driver: bridge
